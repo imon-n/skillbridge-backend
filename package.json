@@ -7,10 +7,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/server.ts",
-        "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
-  },
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "tsx watch src/server.ts",
+  "build": "prisma generate",
+  "start": "tsx src/server.ts",
+  "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
+},
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",

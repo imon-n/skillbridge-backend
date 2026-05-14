@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String?
+  role      Role     @default(STUDENT)
+  isBanned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  tutorProfile TutorProfile?
+  bookings     Booking[]     @relation("StudentBookings")
+  reviews      Review[]
+
+  emailVerified Boolean   @default(false)
+  image         String?
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  phone  String?
+  status String? @default("ACTIVE")
+
+  @@map("users")
+}
+
+model TutorProfile {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  bio        String?
+  image      String?
+  hourlyRate Float
+  rating     Float    @default(0)
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  bookings     Booking[]      @relation("TutorBookings")
+  reviews      Review[]
+  availability Availability[]
+
+  @@map("tutor_profiles")
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+
+  tutors TutorProfile[]
+
+  @@map("categories")
+}
+
+model Availability {
+  id        String @id @default(uuid())
+  tutorId   String
+  day       String // e.g. Monday
+  startTime String // "10:00"
+  endTime   String // "14:00"
+
+  tutor TutorProfile @relation(fields: [tutorId], references: [id])
+
+  @@map("availability")
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  studentId String
+  tutorId   String
+  date      String
+  time      String
+  status    BookingStatus @default(CONFIRMED)
+  createdAt DateTime      @default(now())
+
+  student User         @relation("StudentBookings", fields: [studentId], references: [id])
+  tutor   TutorProfile @relation("TutorBookings", fields: [tutorId], references: [id])
+
+  @@map("bookings")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  tutorId   String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+
+  user  User         @relation(fields: [userId], references: [id])
+  tutor TutorProfile @relation(fields: [tutorId], references: [id])
+
+  // one review per tutor per student
+
+  @@unique([userId, tutorId])
+  @@map("reviews")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}

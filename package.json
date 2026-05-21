@@ -4,18 +4,19 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "main": "index.js",
   "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "tsx watch src/server.ts",
-  "build": "prisma generate",
-  "start": "tsx src/server.ts",
-  "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
-},
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/server.ts",
+    "build": "prisma generate && tsc",
+    "start": "node dist/server.js",
+    "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
+  },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
     "@types/nodemailer": "^8.0.0",
     "@types/pg": "^8.20.0",
@@ -29,8 +30,9 @@
     "better-auth": "^1.6.9",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1",
+    "express": "^4.22.2",
     "nodemailer": "^8.0.7",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "serverless-http": "^4.0.0"
   }
 }

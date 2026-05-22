@@ -5,11 +5,11 @@
   "license": "ISC",
   "author": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
   },
   "devDependencies": {
@@ -19,6 +19,7 @@
     "@types/nodemailer": "^8.0.0",
     "@types/pg": "^8.20.0",
     "prisma": "^7.7.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   },

@@ -26,6 +26,7 @@ import { prisma } from "../../../lib/prisma";
 export const createTutorController = async (
   req: Request,
   res: Response
+  
 ): Promise<void> => {
   try {
     const user = req.user;

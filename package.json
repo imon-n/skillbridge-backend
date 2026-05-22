@@ -9,8 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsx watch src/server.ts",
-   "build": "prisma generate && tsup",
-  "start": "node dist/server.js",
+    "build": "prisma generate && tsup",
+    "start": "node dist/server.js",
     "postinstall": "prisma generate",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
   },
@@ -23,11 +23,12 @@
     "prisma": "^7.7.0",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3" 
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "@prisma/client-runtime-utils": "^7.8.0",
     "better-auth": "^1.6.9",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",

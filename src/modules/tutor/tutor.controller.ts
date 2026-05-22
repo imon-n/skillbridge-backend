@@ -70,7 +70,10 @@ export const getTutorsController = async (req:Request, res:Response)=>{
 
 export const getTutorByIdController = async (req:Request, res:Response)=>{
     try{
-        const tutor = await getTutorById(req.params.id);
+        const id = Array.isArray(req.params.id)
+      ? req.params.id[0]
+      : req.params.id;
+        const tutor = await getTutorById(id);
         res.status(200).json({
             status:true,
             message:"Tutor fetched successfully",

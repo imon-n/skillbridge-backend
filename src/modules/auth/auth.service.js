@@ -1,8 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateMe = exports.getMe = exports.loginUser = exports.registerUser = void 0;
 // auth.service.ts
-import { auth } from "../../../lib/auth";
-import { prisma } from "../../../lib/prisma";
-export const registerUser = async (data) => {
-    const result = await auth.api.signUpEmail({
+const auth_1 = require("../../../lib/auth");
+const prisma_1 = require("../../../lib/prisma");
+const registerUser = async (data) => {
+    const result = await auth_1.auth.api.signUpEmail({
         body: {
             name: data.name,
             email: data.email,
@@ -17,8 +20,9 @@ export const registerUser = async (data) => {
         data: result,
     };
 };
-export const loginUser = async (data) => {
-    const result = await auth.api.signInEmail({
+exports.registerUser = registerUser;
+const loginUser = async (data) => {
+    const result = await auth_1.auth.api.signInEmail({
         body: {
             email: data.email,
             password: data.password,
@@ -30,15 +34,17 @@ export const loginUser = async (data) => {
         data: result,
     };
 };
-export const getMe = async (headers) => {
-    const session = await auth.api.getSession({ headers });
+exports.loginUser = loginUser;
+const getMe = async (headers) => {
+    const session = await auth_1.auth.api.getSession({ headers });
     return {
         success: true,
         data: session?.user,
     };
 };
-export const updateMe = async (userId, data) => {
-    return prisma.user.update({
+exports.getMe = getMe;
+const updateMe = async (userId, data) => {
+    return prisma_1.prisma.user.update({
         where: {
             id: userId,
         },
@@ -48,6 +54,7 @@ export const updateMe = async (userId, data) => {
         },
     });
 };
+exports.updateMe = updateMe;
 // import { Request, Response } from "express";
 // import { auth } from "../../../lib/auth";
 // export const loginUser = async (req: Request, res: Response) => {

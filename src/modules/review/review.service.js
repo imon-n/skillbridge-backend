@@ -1,6 +1,9 @@
-import { prisma } from "../../../lib/prisma";
-export const createReview = async (payload) => {
-    const existingReview = await prisma.review.findFirst({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPublicTutorReviewsService = exports.getTutorReviewsService = exports.createReview = void 0;
+const prisma_1 = require("../../../lib/prisma");
+const createReview = async (payload) => {
+    const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             userId: payload.userId,
             tutorId: payload.tutorId,
@@ -8,7 +11,7 @@ export const createReview = async (payload) => {
     });
     // UPDATE REVIEW IF EXISTS
     if (existingReview) {
-        return prisma.review.update({
+        return prisma_1.prisma.review.update({
             where: {
                 id: existingReview.id,
             },
@@ -27,7 +30,7 @@ export const createReview = async (payload) => {
         });
     }
     // CREATE NEW REVIEW
-    return prisma.review.create({
+    return prisma_1.prisma.review.create({
         data: payload,
         include: {
             user: {
@@ -39,8 +42,9 @@ export const createReview = async (payload) => {
         },
     });
 };
-export const getTutorReviewsService = async (userId) => {
-    const tutor = await prisma.tutorProfile.findUnique({
+exports.createReview = createReview;
+const getTutorReviewsService = async (userId) => {
+    const tutor = await prisma_1.prisma.tutorProfile.findUnique({
         where: {
             userId,
         },
@@ -48,11 +52,10 @@ export const getTutorReviewsService = async (userId) => {
             id: true,
         },
     });
-    console.log(tutor.id);
     if (!tutor) {
         throw new Error("Tutor not found");
     }
-    const sessions = await prisma.review.findMany({
+    const sessions = await prisma_1.prisma.review.findMany({
         where: {
             tutorId: tutor.id,
         },
@@ -71,9 +74,10 @@ export const getTutorReviewsService = async (userId) => {
     });
     return sessions;
 };
-export const getPublicTutorReviewsService = async (tutorUserId) => {
+exports.getTutorReviewsService = getTutorReviewsService;
+const getPublicTutorReviewsService = async (tutorUserId) => {
     // find tutor profile using userId
-    const tutor = await prisma.tutorProfile.findUnique({
+    const tutor = await prisma_1.prisma.tutorProfile.findUnique({
         where: {
             id: tutorUserId,
         },
@@ -85,7 +89,7 @@ export const getPublicTutorReviewsService = async (tutorUserId) => {
         throw new Error("Tutor not found");
     }
     // get all reviews for this tutor
-    const reviews = await prisma.review.findMany({
+    const reviews = await prisma_1.prisma.review.findMany({
         where: {
             tutorId: tutor.id,
         },
@@ -103,3 +107,4 @@ export const getPublicTutorReviewsService = async (tutorUserId) => {
     });
     return reviews;
 };
+exports.getPublicTutorReviewsService = getPublicTutorReviewsService;

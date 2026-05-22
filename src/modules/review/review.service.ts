@@ -58,7 +58,7 @@ export const getTutorReviewsService = async (userId: string) => {
     },
   });
 
-  console.log(tutor.id)
+
   if (!tutor) {
     throw new Error("Tutor not found");
   }

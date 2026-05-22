@@ -51,8 +51,13 @@ import { getPublicTutorReviewsService } from "./review.service";
 
 export const getPublicTutorReviews = async (req: Request, res: Response) => {
   try {
-    const { tutorUserId } = req.params;
-console.log(tutorUserId)
+//     const { tutorUserId } = req.params;
+// console.log(tutorUserId)
+const tutorUserIdRaw = req.params.tutorUserId;
+
+const tutorUserId = Array.isArray(tutorUserIdRaw)
+  ? tutorUserIdRaw[0]
+  : tutorUserIdRaw;
     const reviews = await getPublicTutorReviewsService(tutorUserId);
 
     return res.status(200).json({

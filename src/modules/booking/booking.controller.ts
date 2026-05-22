@@ -62,8 +62,9 @@ export const getMyBookings = async (
 
 export const getBookingById = async(req:Request,res:Response)=>{
    try{
+ const id = req.params.id as string;
       const user = (req as any).user;
-      const bookings =await BookingService.getBookingById(req.params.id);
+      const bookings =await BookingService.getBookingById(id);
       res.json({success:true,data:bookings});
 
    }catch(err:any){

@@ -1,7 +1,7 @@
 import express from "express";
 import {
     getTutorsController,
-     getTutorByIdController,
+    //  getTutorByIdController,
     createTutorController,
     updateTutorProfileController,
     AvailabilityController,
@@ -13,7 +13,7 @@ import authMiddleware, { UserRole } from "../../midlewares/auth.middleware";
 const router = express.Router();
 
 router.get("/tutors", getTutorsController)
-router.get("/tutors/:id", getTutorByIdController)
+// router.get("/tutors/:id", getTutorByIdController)
 router.post(
   "/tutor/profile",
  authMiddleware(UserRole.TUTOR),

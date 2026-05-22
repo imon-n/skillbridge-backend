@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+     "skipLibCheck": true,
      "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "module": "ESNext",
@@ -12,5 +13,19 @@
   "include": ["src"],
    "typeRoots": ["./node_modules/@types", "./src/types"]
 }
+
+// {
+//   "compilerOptions": {
+//     "target": "ES2022",
+//     "module": "CommonJS",
+   
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+//     "allowSyntheticDefaultImports": true
+//   },
+//   "include": ["src"],
+//   "typeRoots": ["./node_modules/@types", "./src/types"]
+// }
 
 

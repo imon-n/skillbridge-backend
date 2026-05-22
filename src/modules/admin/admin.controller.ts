@@ -30,7 +30,11 @@ export const updateUserStatusController = async (
   res: Response
 ) => {
   try {
-    const { id } = req.params;
+    // const { id } = req.params; // this line i change for deployment
+
+        const id = Array.isArray(req.params.id)
+      ? req.params.id[0]
+      : req.params.id;
     const { status } = req.body;
 
     const updatedUser = await updateUserStatusService(

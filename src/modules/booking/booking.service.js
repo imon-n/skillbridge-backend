@@ -1,4 +1,7 @@
-import { prisma } from "../../../lib/prisma";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAllBookingsService = exports.getBookingById = exports.getMyBookings = exports.createBooking = void 0;
+const prisma_1 = require("../../../lib/prisma");
 const convertToMinutes = (time) => {
     const [hourMinute, modifier] = time.split(" ");
     let [hours, minutes] = hourMinute.split(":").map(Number);
@@ -10,8 +13,8 @@ const convertToMinutes = (time) => {
     }
     return hours * 60 + minutes;
 };
-export const createBooking = async (payload) => {
-    const availability = await prisma.availability.findFirst({
+const createBooking = async (payload) => {
+    const availability = await prisma_1.prisma.availability.findFirst({
         where: {
             tutorId: payload.tutorId,
             day: payload.day,
@@ -27,7 +30,7 @@ export const createBooking = async (payload) => {
         bookingTime > endTime) {
         throw new Error("Tutor not available");
     }
-    const existingBooking = await prisma.booking.findFirst({
+    const existingBooking = await prisma_1.prisma.booking.findFirst({
         where: {
             tutorId: payload.tutorId,
             date: payload.date,
@@ -38,12 +41,13 @@ export const createBooking = async (payload) => {
         throw new Error("This slot already booked");
     }
     const { day, ...bookingData } = payload;
-    return prisma.booking.create({
+    return prisma_1.prisma.booking.create({
         data: bookingData,
     });
 };
-export const getMyBookings = async (userId) => {
-    return await prisma.booking.findMany({
+exports.createBooking = createBooking;
+const getMyBookings = async (userId) => {
+    return await prisma_1.prisma.booking.findMany({
         where: {
             studentId: userId,
         },
@@ -60,8 +64,9 @@ export const getMyBookings = async (userId) => {
         },
     });
 };
-export const getBookingById = async (id) => {
-    return prisma.booking.findUnique({
+exports.getMyBookings = getMyBookings;
+const getBookingById = async (id) => {
+    return prisma_1.prisma.booking.findUnique({
         where: { id },
         include: {
             tutor: true,
@@ -69,8 +74,9 @@ export const getBookingById = async (id) => {
         },
     });
 };
-export const getAllBookingsService = async () => {
-    const bookings = await prisma.booking.findMany({
+exports.getBookingById = getBookingById;
+const getAllBookingsService = async () => {
+    const bookings = await prisma_1.prisma.booking.findMany({
         orderBy: {
             createdAt: "desc",
         },
@@ -79,7 +85,7 @@ export const getAllBookingsService = async () => {
     const userIds = bookings.map((b) => b.studentId);
     const tutorIds = bookings.map((b) => b.tutorId);
     // fetch users
-    const users = await prisma.user.findMany({
+    const users = await prisma_1.prisma.user.findMany({
         where: {
             id: { in: userIds },
         },
@@ -91,7 +97,7 @@ export const getAllBookingsService = async () => {
         },
     });
     // fetch tutors
-    const tutors = await prisma.tutorProfile.findMany({
+    const tutors = await prisma_1.prisma.tutorProfile.findMany({
         where: {
             id: { in: tutorIds },
         },
@@ -120,3 +126,4 @@ export const getAllBookingsService = async () => {
     });
     return result;
 };
+exports.getAllBookingsService = getAllBookingsService;

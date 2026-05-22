@@ -1,17 +1,23 @@
-import { getMe, loginUser, registerUser, updateMe } from "./auth.service";
-export const registerUserController = async (req, res) => {
-    const result = await registerUser(req.body);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateMeController = exports.getMeController = exports.loginUserController = exports.registerUserController = void 0;
+const auth_service_1 = require("./auth.service");
+const registerUserController = async (req, res) => {
+    const result = await (0, auth_service_1.registerUser)(req.body);
     res.status(201).json(result);
 };
-export const loginUserController = async (req, res) => {
-    const result = await loginUser(req.body);
+exports.registerUserController = registerUserController;
+const loginUserController = async (req, res) => {
+    const result = await (0, auth_service_1.loginUser)(req.body);
     res.status(200).json(result);
 };
-export const getMeController = async (req, res) => {
-    const result = await getMe(req.headers);
+exports.loginUserController = loginUserController;
+const getMeController = async (req, res) => {
+    const result = await (0, auth_service_1.getMe)(req.headers);
     res.json(result);
 };
-export const updateMeController = async (req, res) => {
+exports.getMeController = getMeController;
+const updateMeController = async (req, res) => {
     const user = req.user;
     if (!user) {
         return res.status(401).json({
@@ -19,10 +25,11 @@ export const updateMeController = async (req, res) => {
             message: "Unauthorized",
         });
     }
-    const result = await updateMe(user.id, req.body);
+    const result = await (0, auth_service_1.updateMe)(user.id, req.body);
     return res.status(200).json({
         success: true,
         message: "Profile updated successfully",
         data: result,
     });
 };
+exports.updateMeController = updateMeController;

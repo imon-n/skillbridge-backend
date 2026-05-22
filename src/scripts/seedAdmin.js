@@ -1,17 +1,19 @@
-import { prisma } from "../../lib/prisma";
-import { UserRole } from "../midlewares/auth.middleware";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const prisma_1 = require("../../lib/prisma");
+const auth_middleware_1 = require("../midlewares/auth.middleware");
 async function seedAdmin() {
     try {
         console.log("***** Admin Seeding Started....");
         const adminData = {
             name: "Admin2 Saheb",
             email: "admin2@admin.com",
-            role: UserRole.ADMIN,
+            role: auth_middleware_1.UserRole.ADMIN,
             password: "admin1234"
         };
         console.log("***** Checking Admin Exist or not");
         // check user exist on db or not
-        const existingUser = await prisma.user.findUnique({
+        const existingUser = await prisma_1.prisma.user.findUnique({
             where: {
                 email: adminData.email
             }
@@ -28,7 +30,7 @@ async function seedAdmin() {
         });
         if (signUpAdmin.ok) {
             console.log("**** Admin created");
-            await prisma.user.update({
+            await prisma_1.prisma.user.update({
                 where: {
                     email: adminData.email
                 },

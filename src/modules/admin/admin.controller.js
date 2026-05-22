@@ -1,8 +1,11 @@
+"use strict";
 // admin.controller.ts
-import { getUsersService, updateUserStatusService, } from "./admin.service";
-export const getUsersController = async (req, res) => {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateUserStatusController = exports.getUsersController = void 0;
+const admin_service_1 = require("./admin.service");
+const getUsersController = async (req, res) => {
     try {
-        const users = await getUsersService();
+        const users = await (0, admin_service_1.getUsersService)();
         return res.status(200).json({
             success: true,
             data: users,
@@ -15,11 +18,15 @@ export const getUsersController = async (req, res) => {
         });
     }
 };
-export const updateUserStatusController = async (req, res) => {
+exports.getUsersController = getUsersController;
+const updateUserStatusController = async (req, res) => {
     try {
-        const { id } = req.params;
+        // const { id } = req.params; // this line i change for deployment
+        const id = Array.isArray(req.params.id)
+            ? req.params.id[0]
+            : req.params.id;
         const { status } = req.body;
-        const updatedUser = await updateUserStatusService(id, status);
+        const updatedUser = await (0, admin_service_1.updateUserStatusService)(id, status);
         return res.status(200).json({
             success: true,
             message: "User updated successfully",
@@ -33,3 +40,4 @@ export const updateUserStatusController = async (req, res) => {
         });
     }
 };
+exports.updateUserStatusController = updateUserStatusController;

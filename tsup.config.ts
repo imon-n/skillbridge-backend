@@ -6,15 +6,5 @@ export default defineConfig({
   platform: "node",
   target: "node20",
   outDir: "dist",
-  noExternal: [],
-  esbuildOptions(options) {
-    options.external = [
-      ...(options.external || []),
-      "@prisma/client-runtime-utils",
-      "@prisma/client",
-      "@prisma/adapter-pg",
-      "pg-native",
-      "generated",
-    ];
-  },
+  external: ["@prisma/client", "pg-native", "@prisma/adapter-pg"],
 });

@@ -38,7 +38,7 @@
     "module": "CommonJS",        // Node.js compatible
     "moduleResolution": "node",  // Standard Node resolution
     "outDir": "./dist",          // Relative path
-    "rootDir": "./src",          // Your source folder
+    "rootDir": "./",          // Your source folder
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

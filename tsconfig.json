@@ -1,36 +1,48 @@
-{
-  "compilerOptions": {
-     "skipLibCheck": true,
-     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "module": "ESNext",
-     "moduleResolution": "bundler",
-       "outDir": "dist",
-    "target": "ES2023",
-    "strict": true,
-    "esModuleInterop": true,
-    // "ignoreDeprecations": "6.0"
-  },
-  "include": ["src"],
-  //  "typeRoots": ["./node_modules/@types", "./src/types"]
-}
-
 // {
 //   "compilerOptions": {
-//     "target": "ES2022",
-//     "module": "CommonJS",
-   
+//      "skipLibCheck": true,
+//      "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+//     "module": "ESNext",
+//      "moduleResolution": "bundler",
+//        "outDir": "/dist",
+//     "target": "ES2023",
 //     "strict": true,
-//     "esModuleInterop": true,
-//     "skipLibCheck": true,
-//     "allowSyntheticDefaultImports": true
+//     // "ignoreDeprecations": "6.0"
 //   },
 //   "include": ["src"],
-//   "typeRoots": ["./node_modules/@types", "./src/types"]
 // }
 
+// // {
+// //   "compilerOptions": {
+// //     "target": "ES2022",
+// //     "module": "CommonJS",
+   
+// //     "strict": true,
+// //     "esModuleInterop": true,
+// //     "skipLibCheck": true,
+// //     "allowSyntheticDefaultImports": true
+// //   },
+// //   "include": ["src"],
+// //   "typeRoots": ["./node_modules/@types", "./src/types"]
+// // }
 
 
 
 
 
+
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "CommonJS",        // Node.js compatible
+    "moduleResolution": "node",  // Standard Node resolution
+    "outDir": "./dist",          // Relative path
+    "rootDir": "./src",          // Your source folder
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}

@@ -17,7 +17,12 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
-  trustedOrigins: [process.env.APP_URL!],
+  // trustedOrigins: [process.env.APP_URL!],
+
+  trustedOrigins: [
+  process.env.APP_URL!,
+  "https://skillbridge-backend-6mpi.onrender.com", // 👈 এটা add করো
+],
 
     advanced: {
     defaultCookieAttributes: {
@@ -27,7 +32,7 @@ export const auth = betterAuth({
       partitioned: true,
     },
   },
-  
+
   user: {
     additionalFields: {
       role: {

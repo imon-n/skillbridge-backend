@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { getMe, loginUser, registerUser, updateMe } from "./auth.service";
 
 
+
 export const registerUserController = async (req: Request, res: Response) => {
   const result = await registerUser(req.body);
   res.status(201).json(result);
@@ -17,6 +18,8 @@ export const getMeController = async (req: Request, res: Response) => {
   const result = await getMe(req.headers);
   res.json(result);
 };
+
+
 export const updateMeController = async (
   req: Request,
   res: Response

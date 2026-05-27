@@ -35,14 +35,18 @@ export const loginUser = async (data: any) => {
   };
 };
 
-export const getMe = async (headers: any) => {
-  const session = await auth.api.getSession({ headers });
 
-  return {
-    success: true,
-    data: session?.user,
-  };
-};
+
+
+
+// export const getMe = async (headers: any) => {
+//   const session = await auth.api.getSession({ headers });
+
+//   return {
+//     success: true,
+//     data: session?.user,
+//   };
+// };
 export const updateMe = async (
   userId: string,
   data: { name?: string; image?: string }
@@ -57,6 +61,17 @@ export const updateMe = async (
     },
   });
 };
+
+
+export const getMe = async (headers: any) => {
+  const session = await auth.api.getSession({ headers });
+
+  return {
+    success: true,
+    data: session?.user,
+  };
+};
+
 // import { Request, Response } from "express";
 // import { auth } from "../../../lib/auth";
 

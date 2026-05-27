@@ -30,7 +30,7 @@ app.use(
 );
 
 
-app.all("/api/auth/*", toNodeHandler(auth)); // 👈 এটা
+app.all('/api/auth/*splat', toNodeHandler(auth)); 
 app.use("/api", authRoute);                 
 
 // other routes

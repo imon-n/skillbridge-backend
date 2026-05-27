@@ -24,14 +24,17 @@ export const auth = betterAuth({
   "https://skillbridge-backend-6mpi.onrender.com", // 👈 এটা add করো
 ],
 
-  advanced: {
+advanced: {
+  useSecureCookies: true,
+  crossSubdomainCookies: {
+    enabled: false,
+  },
   defaultCookieAttributes: {
     sameSite: "none",
     secure: true,
     httpOnly: true,
     partitioned: true,
   },
-  redirectURI: "https://skillbridge-frontend-ten-nu.vercel.app", // 👈 add করো
 },
 
   user: {

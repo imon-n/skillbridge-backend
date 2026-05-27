@@ -14,10 +14,20 @@ const app: Application = express();
 
 app.use(express.json());
 
-app.use(cors({
-  origin: process.env.APP_URL ||"https://skillbridge-frontend-ten-nu.vercel.app",
-  credentials: true
-}));
+// app.use(cors({
+//   origin: process.env.APP_URL ||"https://skillbridge-frontend-ten-nu.vercel.app",
+//   credentials: true
+// }));
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://skillbridge-frontend-ten-nu.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 
 app.use("/api/auth", toNodeHandler(auth)); 

@@ -19,10 +19,21 @@ export const auth = betterAuth({
   }),
   // trustedOrigins: [process.env.APP_URL!],
 
+//   trustedOrigins: [
+//   process.env.APP_URL!,
+//   "https://skillbridge-backend-6mpi.onrender.com", // 👈 এটা add করো
+// ],
+
   trustedOrigins: [
-  process.env.APP_URL!,
-  "https://skillbridge-backend-6mpi.onrender.com", // 👈 এটা add করো
-],
+    process.env.APP_URL!,
+    "https://skillbridge-backend-6mpi.onrender.com",
+    "https://skillbridge-frontend-ten-nu.vercel.app", // ✅ ADD THIS
+  ],
+
+  // 🔥 ADD THIS BLOCK
+  redirects: {
+    signIn: "https://skillbridge-frontend-ten-nu.vercel.app/dashboard",
+  },
 
 
 

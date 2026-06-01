@@ -17,8 +17,11 @@ export const createBooking = async(req:Request,res:Response)=>{
       });
   res.status(201).json({
          success:true,
-         message:"Booking created",
+         message:"Booking created. Please proceed to payment.",
          data:booking,
+         nextStep: "payment",
+         paymentRequired: true,
+         amount: booking.amount,
       })
    }catch(err:any){
   res.status(500).json({success:false,message:err.message});

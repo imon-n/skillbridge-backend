@@ -36,11 +36,17 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
 
+  // trustedOrigins: [
+  //   process.env.APP_URL!,
+  //   // "https://skillbridge-backend-6mpi.onrender.com",
+  //   "https://skillbridge-frontend-ten-nu.vercel.app",
+  // ],
+
+
   trustedOrigins: [
-    process.env.APP_URL!,
-    "https://skillbridge-backend-6mpi.onrender.com",
-    "https://skillbridge-frontend-ten-nu.vercel.app",
+    "http://localhost:3000",
   ],
+
 
   // 🔥 FIXED REDIRECT
   redirects: {

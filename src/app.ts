@@ -9,8 +9,17 @@ import bookingRoute from "./modules/booking/booking.route";
 import reviewRoute from "./modules/review/review.route";
 import authRoute from "./modules/auth/auth.route";
 import adminRoute from "./modules/admin/admin.route";
+import paymentRoute from "./modules/payment/payment.route";
+import * as PaymentController from "./modules/payment/payment.controller";
 
 const app: Application = express();
+
+// Stripe webhook - must be before json middleware
+app.post(
+  "/api/v1/payments/stripe/webhook",
+  express.raw({ type: "application/json" }),
+  PaymentController.handleStripeWebhook
+);
 
 app.use(express.json());
 
@@ -39,6 +48,8 @@ app.use("/api", categoryRoute);
 app.use("/api", bookingRoute);
 app.use("/api", reviewRoute);
 app.use("/api",adminRoute );
+app.use("/api/v1/payments", paymentRoute);
+
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });

@@ -41,3 +41,4 @@ export const updateMeController = async (
     data: result,
   });
 };
+

@@ -52,12 +52,104 @@ export const createBooking = async (payload: any) => {
     throw new Error("This slot already booked");
   }
 
-const { day, ...bookingData } = payload;
+  // Get tutor profile to calculate amount
+  const tutor = await prisma.tutorProfile.findUnique({
+    where: { id: payload.tutorId },
+  });
 
-return prisma.booking.create({
-  data: bookingData,
-});
+  if (!tutor) {
+    throw new Error("Tutor not found");
+  }
+
+  const { day, ...bookingData } = payload;
+
+  return prisma.booking.create({
+    data: {
+      ...bookingData,
+      amount: tutor.hourlyRate,
+      status: "CONFIRMED", // Booking is pending payment
+    },
+  });
 };
+
+export const createBookingPendingPayment = async (payload: any) => {
+  const availability = await prisma.availability.findFirst({
+    where: {
+      tutorId: payload.tutorId,
+      day: payload.day,
+    },
+  });
+
+  if (!availability) {
+    throw new Error("Tutor not available on this day");
+  }
+
+  const bookingTime = convertToMinutes(payload.time);
+  const startTime = convertToMinutes(availability.startTime);
+  const endTime = convertToMinutes(availability.endTime);
+
+  if (
+    bookingTime < startTime ||
+    bookingTime > endTime
+  ) {
+    throw new Error("Tutor not available");
+  }
+
+  const existingBooking = await prisma.booking.findFirst({
+    where: {
+      tutorId: payload.tutorId,
+      date: payload.date,
+      time: payload.time,
+    },
+  });
+
+  if (existingBooking) {
+    throw new Error("This slot already booked");
+  }
+
+  // Get tutor profile to calculate amount
+  const tutor = await prisma.tutorProfile.findUnique({
+    where: { id: payload.tutorId },
+  });
+
+  if (!tutor) {
+    throw new Error("Tutor not found");
+  }
+
+  const { day, ...bookingData } = payload;
+
+  return prisma.booking.create({
+    data: {
+      ...bookingData,
+      amount: tutor.hourlyRate,
+      status: "CONFIRMED", // Will be updated after payment
+    },
+    include: {
+      tutor: {
+        include: {
+          user: true,
+          category: true,
+        },
+      },
+    },
+  });
+};
+
+export const getBookingAmount = async (bookingId: string) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: {
+      tutor: true,
+    },
+  });
+
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
+
+  return booking.tutor.hourlyRate;
+};
+
 export const getMyBookings = async (userId: string) => {
   return await prisma.booking.findMany({
     where: {

@@ -1,5 +1,5 @@
 import {Request,Response} from "express";
-import { createTutor, getTutors, Availability, updateTutor, getTutorById, getTutorSessionsService } from "./tutor.service";
+import { createTutor, getTutors, Availability, updateTutor, getTutorById, getTutorSessionsService,getAvailabilityByTutorIdService } from "./tutor.service";
 import { prisma } from "../../../lib/prisma";
 // export const createTutorController = async(req:Request, res:Response)=>{
 //     try{
@@ -157,7 +157,26 @@ export const AvailabilityController =
 
   };
 
+export const getTutorAvailabilityController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const tutorId = req.params.id as string;
 
+    const data = await getAvailabilityByTutorIdService(tutorId);
+
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 export const getTutorSessions = async (req: Request, res: Response) => {
   try {

@@ -152,7 +152,21 @@ export const Availability = async (
 
 };
 
+export const getAvailabilityByTutorIdService = async (
+  tutorId: string
+) => {
+  return prisma.availability.findMany({
+    where: {
+      tutorId,
+    },
 
+    // safe ordering (NO createdAt!)
+    orderBy: [
+      { day: "asc" },
+      { startTime: "asc" },
+    ],
+  });
+};
 export const getTutorSessionsService = async (userId: string) => {
 
   const tutor = await prisma.tutorProfile.findUnique({

@@ -50,7 +50,7 @@ model User {
   tutorProfile TutorProfile?
   bookings     Booking[]     @relation("StudentBookings")
   reviews      Review[]
-  payments     Payment[]
+ 
 
   emailVerified Boolean   @default(false)
   image         String?
@@ -107,6 +107,24 @@ model Availability {
   @@map("availability")
 }
 
+// model Booking {
+//   id        String        @id @default(uuid())
+//   studentId String
+//   tutorId   String
+//   date      String
+//   time      String
+//   status    BookingStatus @default(CONFIRMED)
+//   createdAt DateTime      @default(now())
+//   paymentId String?
+//   payment   Payment?      @relation(fields: [paymentId], references: [id])
+//   amount    Float         @default(0)
+
+//   student User         @relation("StudentBookings", fields: [studentId], references: [id])
+//   tutor   TutorProfile @relation("TutorBookings", fields: [tutorId], references: [id])
+
+//   @@map("bookings")
+// }
+
 model Booking {
   id        String        @id @default(uuid())
   studentId String
@@ -115,8 +133,6 @@ model Booking {
   time      String
   status    BookingStatus @default(CONFIRMED)
   createdAt DateTime      @default(now())
-  paymentId String?
-  payment   Payment?      @relation(fields: [paymentId], references: [id])
   amount    Float         @default(0)
 
   student User         @relation("StudentBookings", fields: [studentId], references: [id])
@@ -125,31 +141,31 @@ model Booking {
   @@map("bookings")
 }
 
-model Payment {
-  id              String        @id @default(uuid())
-  bookingId       String        @unique
-  booking         Booking[]
-  userId          String
-  user            User          @relation(fields: [userId], references: [id])
-  amount          Float
-  currency        String        @default("USD")
-  status          PaymentStatus @default(PENDING)
-  method          PaymentMethod
-  transactionId   String?       @unique
-  orderId         String?       @unique
-  stripePaymentId String?       @unique
-  sslcSessionId   String?       @unique
-  description     String?
-  metadata        String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  completedAt     DateTime?
+// model Payment {
+//   id              String        @id @default(uuid())
+//   bookingId       String        @unique
+//   booking         Booking[]
+//   userId          String
+//   user            User          @relation(fields: [userId], references: [id])
+//   amount          Float
+//   currency        String        @default("USD")
+//   status          PaymentStatus @default(PENDING)
+//   method          PaymentMethod
+//   transactionId   String?       @unique
+//   orderId         String?       @unique
+//   stripePaymentId String?       @unique
+//   sslcSessionId   String?       @unique
+//   description     String?
+//   metadata        String?
+//   createdAt       DateTime      @default(now())
+//   updatedAt       DateTime      @updatedAt
+//   completedAt     DateTime?
 
-  @@index([userId])
-  @@index([bookingId])
-  @@index([status])
-  @@map("payments")
-}
+//   @@index([userId])
+//   @@index([bookingId])
+//   @@index([status])
+//   @@map("payments")
+// }
 
 model Review {
   id        String   @id @default(uuid())

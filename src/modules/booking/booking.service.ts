@@ -16,8 +16,63 @@ const convertToMinutes = (time: string) => {
   return hours * 60 + minutes;
 };
 
-export const createBooking = async (payload: any) => {
+// export const createBooking = async (payload: any) => {
 
+//   const availability = await prisma.availability.findFirst({
+//     where: {
+//       tutorId: payload.tutorId,
+//       day: payload.day,
+//     },
+//   });
+
+//   if (!availability) {
+//     throw new Error("Tutor not available on this day");
+//   }
+
+//   const bookingTime = convertToMinutes(payload.time);
+//   const startTime = convertToMinutes(availability.startTime);
+//   const endTime = convertToMinutes(availability.endTime);
+
+//   if (
+//     bookingTime < startTime ||
+//     bookingTime > endTime
+//   ) {
+//     throw new Error("Tutor not available");
+//   }
+
+//   const existingBooking = await prisma.booking.findFirst({
+//     where: {
+//       tutorId: payload.tutorId,
+//       date: payload.date,
+//       time: payload.time,
+//     },
+//   });
+
+//   if (existingBooking) {
+//     throw new Error("This slot already booked");
+//   }
+
+//   // Get tutor profile to calculate amount
+//   const tutor = await prisma.tutorProfile.findUnique({
+//     where: { id: payload.tutorId },
+//   });
+
+//   if (!tutor) {
+//     throw new Error("Tutor not found");
+//   }
+
+//   const { day, ...bookingData } = payload;
+
+//   return prisma.booking.create({
+//     data: {
+//       ...bookingData,
+//       amount: tutor.hourlyRate,
+//       status: "CONFIRMED", // Booking is pending payment
+//     },
+//   });
+// };
+
+export const createBooking = async (payload: any) => {
   const availability = await prisma.availability.findFirst({
     where: {
       tutorId: payload.tutorId,
@@ -33,10 +88,7 @@ export const createBooking = async (payload: any) => {
   const startTime = convertToMinutes(availability.startTime);
   const endTime = convertToMinutes(availability.endTime);
 
-  if (
-    bookingTime < startTime ||
-    bookingTime > endTime
-  ) {
+  if (bookingTime < startTime || bookingTime > endTime) {
     throw new Error("Tutor not available");
   }
 
@@ -49,12 +101,13 @@ export const createBooking = async (payload: any) => {
   });
 
   if (existingBooking) {
-    throw new Error("This slot already booked");
+    throw new Error("This slot is already booked");
   }
 
-  // Get tutor profile to calculate amount
   const tutor = await prisma.tutorProfile.findUnique({
-    where: { id: payload.tutorId },
+    where: {
+      id: payload.tutorId,
+    },
   });
 
   if (!tutor) {
@@ -66,12 +119,11 @@ export const createBooking = async (payload: any) => {
   return prisma.booking.create({
     data: {
       ...bookingData,
-      amount: tutor.hourlyRate,
-      status: "CONFIRMED", // Booking is pending payment
+      amount: tutor.hourlyRate, // চাইলে এটাও remove করতে পারেন
+      status: "CONFIRMED",
     },
   });
 };
-
 export const createBookingPendingPayment = async (payload: any) => {
   const availability = await prisma.availability.findFirst({
     where: {

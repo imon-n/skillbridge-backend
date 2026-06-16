@@ -2,32 +2,60 @@ import { prisma } from "../../../lib/prisma";
 import* as BookingService from "./booking.service"
 import { RequestHandler } from "express";
 import { Request, Response } from "express";
-export const createBooking = async(req:Request,res:Response)=>{
-   try{
-      const user = (req as any).user;
-          if (!user) {
-     return  res.status(401).json({
+// export const createBooking = async(req:Request,res:Response)=>{
+//    try{
+//       const user = (req as any).user;
+//           if (!user) {
+//      return  res.status(401).json({
+//         success: false,
+//         message: "Unauthorized",
+//       });
+//     }
+//       const booking = await BookingService.createBooking({
+//          studentId:user.id,
+//          ...req.body,
+//       });
+//   res.status(201).json({
+//          success:true,
+//          message:"Booking created. Please proceed to payment.",
+//          data:booking,
+//          nextStep: "payment",
+//          paymentRequired: true,
+//          amount: booking.amount,
+//       })
+//    }catch(err:any){
+//   res.status(500).json({success:false,message:err.message});
+//    }
+// }
+
+export const createBooking = async (req: Request, res: Response) => {
+  try {
+    const user = (req as any).user;
+
+    if (!user) {
+      return res.status(401).json({
         success: false,
         message: "Unauthorized",
       });
     }
-      const booking = await BookingService.createBooking({
-         studentId:user.id,
-         ...req.body,
-      });
-  res.status(201).json({
-         success:true,
-         message:"Booking created. Please proceed to payment.",
-         data:booking,
-         nextStep: "payment",
-         paymentRequired: true,
-         amount: booking.amount,
-      })
-   }catch(err:any){
-  res.status(500).json({success:false,message:err.message});
-   }
-}
 
+    const booking = await BookingService.createBooking({
+      studentId: user.id,
+      ...req.body,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Booking created successfully",
+      data: booking,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
 export const getMyBookings = async (
   req: Request,
